@@ -7,6 +7,21 @@ print(mikaelbeat.lives)
 
 mikaelbeat.lives -= 2
 print(mikaelbeat.lives)
+
+
+
 print(mikaelbeat)
 
-# 133, 3:00
+mikaelbeat.lives -= 50
+print(mikaelbeat)
+
+print("\n*************** Challenge ***************\n")
+
+mikaelbeat.level += 3
+print(mikaelbeat)
+
+mikaelbeat.level -= 1
+print(mikaelbeat)
+
+mikaelbeat.score = 4500
+print(mikaelbeat)
