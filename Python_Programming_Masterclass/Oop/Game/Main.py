@@ -1,27 +1,33 @@
-import Player
+import Player, Enemy
+
+print("\n*************** Player ***************\n")
 
 mikaelbeat = Player.Player("Mikaelbeat")
 
-print(mikaelbeat.name)
-print(mikaelbeat.lives)
-
 mikaelbeat.lives -= 2
-print(mikaelbeat.lives)
-
-
-
 print(mikaelbeat)
 
-mikaelbeat.lives -= 50
-print(mikaelbeat)
-
-print("\n*************** Challenge ***************\n")
-
+mikaelbeat.lives += 5
 mikaelbeat.level += 3
 print(mikaelbeat)
 
-mikaelbeat.level -= 1
-print(mikaelbeat)
 
-mikaelbeat.score = 4500
-print(mikaelbeat)
+print("\n*************** Basic enemy ***************\n")
+
+monster = Enemy.Enemy("Basic enemy", 12, 1)
+print(monster)
+
+monster.take_damage(5)
+print(monster)
+
+
+print("\n*************** Troll ***************\n")
+
+ugly_troll = Enemy.Troll("Ugly troll")
+print(ugly_troll)
+ugly_troll.grunt()
+
+
+cave_troll = Enemy.Troll("Cave troll")
+print(cave_troll)
+cave_troll.grunt()
