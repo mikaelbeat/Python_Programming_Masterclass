@@ -26,8 +26,29 @@ print("\n*************** Troll ***************\n")
 ugly_troll = Enemy.Troll("Ugly troll")
 print(ugly_troll)
 ugly_troll.grunt()
-
+ugly_troll.take_damage(10)
 
 cave_troll = Enemy.Troll("Cave troll")
 print(cave_troll)
 cave_troll.grunt()
+cave_troll.take_damage(15)
+
+
+print("\n*************** Vampyre ***************\n")
+
+dracula = Enemy.Vampyre("Dracula")
+print(dracula)
+dracula.bite()
+dracula.take_damage(5)
+
+while dracula.alive:
+    dracula.take_damage(1)
+    print(dracula)
+
+
+
+
+
+
+
+
