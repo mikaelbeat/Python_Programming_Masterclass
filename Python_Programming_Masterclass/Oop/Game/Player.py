@@ -1,5 +1,3 @@
-
-
 class Player(object):
     
     def __init__(self, name):
@@ -53,6 +51,3 @@ class Player(object):
     @score.setter
     def score(self, score):
         self._score = score
-    
-            
-        

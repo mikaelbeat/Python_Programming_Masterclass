@@ -9,10 +9,10 @@ class Account:
         return pytz.utc.localize(utc_time)
     
     def __init__(self, name, balance):
-        self._name = name
+        self.name = name
         self._balance = balance
         self._transaction_list = [(Account._current_time(), balance)]
-        print("Account created for " + self._name)
+        print("Account created for " + self.name)
         
     def deposit(self, amount):
         if amount > 0:
