@@ -1,3 +1,4 @@
+from builtins import True
 class Enemy:
     
     def __init__(self, name="Enemy", hit_points=0, lives=0):
@@ -39,3 +40,16 @@ class Vampyre(Enemy):
         
     def bite(self):
         print(f"I {self.name} will bite you!\n")
+        
+    def dodge(self):
+        import random
+        if random.randint(1, 3) == 3:
+            print(f"***** {self.name} dodges *****\n")
+            return True
+        else:
+            return False
+        
+        
+        
+        
+        
