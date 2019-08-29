@@ -41,14 +41,16 @@ print(dracula)
 dracula.bite()
 dracula.take_damage(5)
  
-while dracula._alive:
-    dracula.take_damage(1)
-    print(dracula)
+# while dracula._alive:
+#     dracula.take_damage(1)
+#     print(dracula)
     
     
 print("\n*************** Vampyre King***************\n")
 
 vlad = Enemy.VampyreKing("Vlad")
+print(vlad)
+vlad.take_damage(50)
 print(vlad)
 
 
