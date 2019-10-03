@@ -1,0 +1,6 @@
+.schema -> Displays database schema
+
+select albums.name, songs.track, songs.title from songs inner join albums on songs.album = albums._id order by
+albums.name, songs.track;
+
+select artists.name, albums.name from albums inner join artists on albums.artist = artists._id order by artists.name;
