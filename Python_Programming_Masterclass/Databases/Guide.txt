@@ -1,6 +1,12 @@
 .schema -> Displays database schema
+.backup <name of the backup> -> Creates backup database
+.restore <name of the backup> -> Restores backup
 
-select albums.name, songs.track, songs.title from songs inner join albums on songs.album = albums._id order by
+SELECT albums.name, songs.track, songs.title FROM songs INNER JOIN albums ON songs.album = albums._id order by
 albums.name, songs.track;
 
-select artists.name, albums.name from albums inner join artists on albums.artist = artists._id order by artists.name;
+SELECT artists.name, albums.name FROM albums INNER JOIN artists ON albums.artist = artists._id order by artists.name;
+
+SELECT * FROM songs WHERE songs.title like "%doctor%";
+
+SELECT count(*) FROM artists;
