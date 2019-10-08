@@ -34,6 +34,3 @@ def Close_connection_to_database():
 Print_all_data_in_database_using_for_loop()
 Print_all_data_in_database_using_fetchall()
 Close_connection_to_database()
-
-
-#7:53
