@@ -15,18 +15,62 @@ class Scrollbox(tkinter.Listbox):
         super().grid(row=row, column=column, sticky=sticky, rowspan=rowspan, columnspan=columnspan, **kwargs)
         self.scrollbar.grid(row=row, column=column, sticky="nse", rowspan=rowspan)
         self["yscrollcommand"] = self.scrollbar.set
+        
+        
+class DataListBox(Scrollbox):
+    
+    def __init__(self, window, connection, table, field, sort_order=(), **kwargs):
+        super().__init__(window, **kwargs)
+        
+        self.cursor = connection.cursor()
+        self.table = table
+        self.field = field
+        
+        self.sql_select = "SELECT " + self.field + ", _id" + " FROM " + self.table
+        if sort_order:
+            self.sql_sort = " ORDER BY " + ",".join(sort_order)
+        else:
+            self.sql_sort = " ORDER BY " + self.field
+            
+            
+    def clear(self):
+        self.delete(0, tkinter.END)
+        
+    def requery(self):
+        print(self.sql_select + self.sql_sort)
+        self.cursor.execute(self.sql_select + self.sql_sort)
+        
+        # Clear the listbox contents before re-loading
+        self.clear()
+        for value in self.cursor:
+            self.insert(tkinter.END, value[0])
 
 
 def get_albums(event):
     lb = event.widget
     index = lb.curselection()[0]
     artist_name = lb.get(index),
-    
+
+    # get the artist ID from the database row
     artist_id = conn.execute("SELECT artists._id FROM artists WHERE artists.name=?", artist_name).fetchone()
     alist = []
-    for row in conn.execute("SELECT albums.name FROM albums WHERE albums.artist=? ORDER BY albums.name", artist_id):
+    for row in conn.execute("SELECT albums.name FROM albums WHERE albums.artist = ? ORDER BY albums.name", artist_id):
         alist.append(row[0])
     albumsLV.set(tuple(alist))
+    songsLV.set(("Choose an album",))
+    
+def get_songs(event):
+    lb = event.widget
+    index = int(lb.curselection()[0])
+    album_name = lb.get(index),
+
+    # get the artist ID from the database row
+    album_id = conn.execute("SELECT albums._id FROM albums WHERE albums.name=?", album_name).fetchone()
+    alist = []
+    for x in conn.execute("SELECT songs.title FROM songs WHERE songs.album=? ORDER BY songs.track", album_id):
+        alist.append(x[0])
+    songsLV.set(tuple(alist))
+    
 
 # MAIN WINDOWS
 
@@ -52,25 +96,28 @@ tkinter.Label(mainWindow, text="Songs").grid(row=0, column=2)
 
 # LISTS
 
-artistsList = Scrollbox(mainWindow)
+artistsList = DataListBox(mainWindow, conn, "artists", "name")
 artistsList.grid(row=1, column=0, sticky="nsew", rowspan=2, padx=(30,0))
 artistsList.config(border=2, relief="sunken")
 
-for artist in conn.execute("SELECT artists.name FROM artists ORDER BY artists.name"):
-    artistsList.insert(tkinter.END, artist[0])
+artistsList.requery()
     
 artistsList.bind("<<ListboxSelect>>", get_albums)
 
 albumsLV = tkinter.Variable(mainWindow)
 albumsLV.set(("Choose artist",))
-albumsList = Scrollbox(mainWindow, listvariable=albumsLV)
+albumsList = DataListBox(mainWindow, conn, "albums", "name", sort_order=("name",))
+albumsList.requery()
 albumsList.grid(row=1, column=1, sticky="nsew", padx=(30, 0))
 albumsList.config(border=2, relief="sunken")
+
+albumsList.bind("<<ListboxSelect>>", get_songs)
 
 
 songsLV = tkinter.Variable(mainWindow)
 songsLV.set(("Choose album",))
-songsList = Scrollbox(mainWindow, listvariable=songsLV)
+songsList = DataListBox(mainWindow, conn, "songs", "title", ("track", "title"))
+songsList.requery()
 songsList.grid(row=1, column=2, sticky="nsew", padx=(30, 0))
 songsList.config(border=2, relief="sunken")
 
