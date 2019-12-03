@@ -36,9 +36,14 @@ class DataListBox(Scrollbox):
     def clear(self):
         self.delete(0, tkinter.END)
         
-    def requery(self):
-        print(self.sql_select + self.sql_sort)
-        self.cursor.execute(self.sql_select + self.sql_sort)
+    def requery(self, link_value=None):
+        if link_value:
+            sql = self.sql_select + " WHERE " + " artist " + "=?" + self.sql_sort
+            print(sql)
+            self.cursor.execute(sql, (link_value,))
+        else:
+            print(self.sql_select + self.sql_sort)
+            self.cursor.execute(self.sql_select + self.sql_sort)
         
         # Clear the listbox contents before re-loading
         self.clear()
@@ -46,18 +51,21 @@ class DataListBox(Scrollbox):
             self.insert(tkinter.END, value[0])
 
 
-def get_albums(event):
-    lb = event.widget
-    index = lb.curselection()[0]
-    artist_name = lb.get(index),
-
-    # get the artist ID from the database row
-    artist_id = conn.execute("SELECT artists._id FROM artists WHERE artists.name=?", artist_name).fetchone()
-    alist = []
-    for row in conn.execute("SELECT albums.name FROM albums WHERE albums.artist = ? ORDER BY albums.name", artist_id):
-        alist.append(row[0])
-    albumsLV.set(tuple(alist))
-    songsLV.set(("Choose an album",))
+    def on_select(self, event):
+        print(self is event.widget)
+        index = self.curselection()[0]
+        value = self.get(index),
+    
+        # get the artist ID from the database row
+        link_id = self.cursor.execute(self.sql_select + " WHERE " + self.field + "=?", value).fetchone()[1]
+        albumsList.requery(link_id)
+        
+    #     artist_id = conn.execute("SELECT artists._id FROM artists WHERE artists.name=?", artist_name).fetchone()
+    #     alist = []
+    #     for row in conn.execute("SELECT albums.name FROM albums WHERE albums.artist = ? ORDER BY albums.name", artist_id):
+    #         alist.append(row[0])
+    #     albumsLV.set(tuple(alist))
+    #     songsLV.set(("Choose an album",))
     
 def get_songs(event):
     lb = event.widget
@@ -102,12 +110,12 @@ artistsList.config(border=2, relief="sunken")
 
 artistsList.requery()
     
-artistsList.bind("<<ListboxSelect>>", get_albums)
+artistsList.bind("<<ListboxSelect>>", license)
 
 albumsLV = tkinter.Variable(mainWindow)
 albumsLV.set(("Choose artist",))
 albumsList = DataListBox(mainWindow, conn, "albums", "name", sort_order=("name",))
-albumsList.requery()
+albumsList.requery(12)
 albumsList.grid(row=1, column=1, sticky="nsew", padx=(30, 0))
 albumsList.config(border=2, relief="sunken")
 
