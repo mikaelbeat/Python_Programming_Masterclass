@@ -1,18 +1,19 @@
-
 import time
 from time import time as my_timer
 
-print("Starting time calculator")
-#time.sleep(3)
+print("\n********** Timer **********\n")
 
-start_time = 13:39:58
-time.sleep(3)
 
+
+print("Starting timer...")
+start_time = my_timer()
+
+time.sleep(70)
 end_time = my_timer()
+print("Timer ended!")
 
 print("Started at " + time.strftime("%X", time.localtime(start_time)))
 print("Ended at " + time.strftime("%X", time.localtime(end_time)))
 
 result = end_time - start_time
-
-print(f"Your reaction time was {result}.")
+print(f"Time was {result}.")
